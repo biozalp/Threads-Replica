@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
+    let user: User
     @State private var bio = ""
     @State private var link = ""
     @State private var isPrivateProfile = false
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel = EditProfileViewModel()
+
     var body: some View {
         NavigationStack{
             ZStack{
@@ -22,12 +27,23 @@ struct EditProfileView: View {
                         VStack(alignment: .leading){
                             Text("Name")
                                 .fontWeight(.semibold)
-                            Text("Berk Ilgar Ozalp")
+                            Text(user.fullname)
                         }
                         
                         Spacer()
                         
-                        CircleProfileImageView()
+                        PhotosPicker(selection: $viewModel.selectedItem){
+                            if let image = viewModel.profileImage{
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height:40)
+                                    .clipShape(Circle())
+                            } else {
+                                CircleProfileImageView()
+                            }
+                        }
+                        
                     }
                     
                     Divider()
@@ -41,17 +57,7 @@ struct EditProfileView: View {
                     }
                     
                     Divider()
-                    
-                    //link field
-                    VStack (alignment: .leading){
-                        Text("Link")
-                            .fontWeight(.semibold)
-                            .font(.footnote)
-                        TextField("Add Link...", text: $link)
-                    }
-                    
-                    Divider()
-                    
+                
                     Toggle("Private profile", isOn: $isPrivateProfile)
                     
                 }
@@ -72,7 +78,7 @@ struct EditProfileView: View {
             .toolbar {
                 ToolbarItem (placement: .topBarLeading){
                     Button ("Cancel") {
-                        
+                        dismiss()
                     }
                     .font(.subheadline)
                     .foregroundStyle(Color.black)
@@ -80,7 +86,8 @@ struct EditProfileView: View {
                 }
                 ToolbarItem (placement: .topBarTrailing){
                     Button ("Done") {
-                        
+                        Task {try await viewModel.updateUerData()}
+                        dismiss()
                     }
                     .font(.subheadline)
                     .fontWeight(.semibold)
@@ -90,8 +97,4 @@ struct EditProfileView: View {
             }
         }
     }   
-}
-
-#Preview {
-    EditProfileView()
 }

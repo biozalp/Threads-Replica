@@ -14,5 +14,7 @@ struct ThreadsTextViewModifier: ViewModifier{
             .font(.subheadline)
             .background(Color(.systemGray6))
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
     }
 }
