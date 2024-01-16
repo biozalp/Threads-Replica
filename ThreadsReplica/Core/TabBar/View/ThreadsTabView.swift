@@ -49,6 +49,8 @@ struct ThreadsTabView: View {
     }
 }
 
+// comment this bulut and bucuk and shitty content bucuk
+
 #Preview {
     ThreadsTabView()
 }
