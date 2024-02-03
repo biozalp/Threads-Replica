@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ThreadCell: View {
+    
+    
+    let thread: Thread
+    
     var body: some View {
         VStack{
             HStack(alignment: .top, spacing:12) {
@@ -33,7 +37,7 @@ struct ThreadCell: View {
                         }
                         
                     }
-                    Text("I got my first app going")
+                    Text(thread.caption)
                         .font(.footnote)
                         .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
                     
@@ -74,6 +78,4 @@ struct ThreadCell: View {
     }
 }
 
-#Preview {
-    ThreadCell()
-}
+
